@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PQC File Encryptor</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="importmap">
+{
+  "imports": {
+    "@noble/post-quantum/ml-kem": "./lib/ml-kem-bundle.js"
+  }
+}
+</script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+<link rel="icon" href="data:,">
+<body>
+  <div class="container">
+    <header>
+      <h1>PQC File Encryptor</h1>
+      <p class="subtitle">Post-Quantum Cryptography with ML-KEM-768</p>
+      <button id="btn-dark-mode" class="btn btn-outline btn-small">🌙 Dark Mode</button>
+    </header>
+
+    <!-- Security Warning -->
+    <div class="warning-box">
+      <strong>⚠️ Security Warning:</strong> Losing your private key means permanent data loss. Store your private key securely and never share it.
+    </div>
+
+    <!-- Runtime Error Display -->
+    <div id="runtime-error" class="error-box hidden"></div>
+
+    <!-- Key Management Section -->
+    <section class="card" id="key-management">
+      <h2>🔑 Key Management</h2>
+      
+      <div class="button-group">
+        <button id="btn-generate" class="btn btn-primary">Generate Keypair</button>
+        <button id="btn-download-public" class="btn btn-secondary" disabled>Download Public Key</button>
+        <button id="btn-download-private" class="btn btn-danger" disabled>Download Private Key</button>
+        <button id="btn-reset" class="btn btn-outline" disabled>Reset All</button>
+      </div>
+
+      <div class="import-group">
+        <div class="import-row">
+          <label for="input-public-key">Import Public Key:</label>
+          <input type="file" id="input-public-key" accept=".json">
+        </div>
+        <div class="import-row">
+          <label for="input-private-key">Import Private Key:</label>
+          <input type="file" id="input-private-key" accept=".json">
+        </div>
+      </div>
+
+      <div class="key-status">
+        <span id="badge-public" class="badge badge-empty">No Public Key</span>
+        <span id="badge-private" class="badge badge-empty">No Private Key</span>
+      </div>
+    </section>
+
+    <!-- Encrypt Section -->
+    <section class="card" id="encrypt-section">
+      <h2>🔒 Encrypt File</h2>
+
+      <!-- Mode Toggle -->
+      <div class="mode-toggle">
+        <label>
+          <input type="radio" name="encrypt-mode" value="keypair" checked>
+          🔑 Keypair
+        </label>
+        <label>
+          <input type="radio" name="encrypt-mode" value="password">
+          🔒 Password
+        </label>
+      </div>
+
+      <p class="section-desc" id="encrypt-desc">Encrypt files using your public key. Supported: .txt, .env (max 10MB)</p>
+
+      <!-- Password Section (hidden by default) -->
+      <div id="encrypt-password-section" class="hidden">
+        <div class="password-input-group">
+          <input type="password" id="encrypt-password" placeholder="Enter or generate a password" autocomplete="off">
+          <button type="button" id="btn-generate-password" class="btn btn-outline btn-small" title="Generate strong password">🎲 Generate</button>
+          <button type="button" id="btn-toggle-encrypt-visibility" class="btn btn-outline btn-small" title="Toggle password visibility">👁</button>
+        </div>
+        <div id="password-strength" class="strength-meter">
+          <div class="strength-bar" style="width: 0%"></div>
+          <span id="strength-label" class="strength-label"></span>
+        </div>
+        <p class="section-desc">Use the generated password or type your own (min 8 characters required)</p>
+      </div>
+      
+      <div class="file-input-group">
+        <input type="file" id="input-encrypt-file" accept=".txt,.env">
+      </div>
+
+      <button id="btn-encrypt" class="btn btn-primary btn-large" disabled>Encrypt File</button>
+      
+      <div id="encrypt-status" class="status-box"></div>
+    </section>
+
+    <!-- Decrypt Section -->
+    <section class="card" id="decrypt-section">
+      <h2>🔓 Decrypt File</h2>
+
+      <!-- Mode Toggle -->
+      <div class="mode-toggle">
+        <label>
+          <input type="radio" name="decrypt-mode" value="keypair" checked>
+          🔑 Keypair
+        </label>
+        <label>
+          <input type="radio" name="decrypt-mode" value="password">
+          🔒 Password
+        </label>
+      </div>
+
+      <p class="section-desc" id="decrypt-desc">Decrypt files using your private key. File must be .pqenc.json</p>
+
+      <!-- Password Section (hidden by default) -->
+      <div id="decrypt-password-section" class="hidden">
+        <div class="password-input-group">
+          <input type="password" id="decrypt-password" placeholder="Enter the password" autocomplete="off">
+          <button type="button" id="btn-toggle-decrypt-visibility" class="btn btn-outline btn-small" title="Toggle password visibility">👁</button>
+        </div>
+      </div>
+      
+      <div class="file-input-group">
+        <input type="file" id="input-decrypt-file" accept=".pqenc.json">
+      </div>
+
+      <button id="btn-decrypt" class="btn btn-primary btn-large" disabled>Decrypt File</button>
+      
+      <div id="decrypt-status" class="status-box"></div>
+    </section>
+
+    <footer>
+      <p>Client-side only. No data is transmitted to any server.</p>
+    </footer>
+  </div>
+
+  <script type="module" src="app.js?v=12"></script>
+</body>
+</html>
