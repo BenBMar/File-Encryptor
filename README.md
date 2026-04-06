@@ -156,6 +156,5 @@ If you see "secretKey expected Uint8Array of length 2400, got length=1088", the 
 - Use the **🎲 Generate** button for a strong 24-character password
 - Or type your own password (minimum 8 characters, but 12+ recommended)
 
-## License
 
-MIT
+
