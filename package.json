@@ -1,0 +1,27 @@
+{
+  "name": "pqc-file-encryptor",
+  "version": "1.0.0",
+  "description": "Browser-based file encryption using post-quantum cryptography (ML-KEM-768)",
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "start": "npx serve .",
+    "dev": "python -m http.server 8080"
+  },
+  "dependencies": {
+    "@noble/curves": "^2.0.0",
+    "@noble/hashes": "^2.0.0",
+    "@noble/post-quantum": "^0.6.0"
+  },
+  "keywords": [
+    "cryptography",
+    "post-quantum",
+    "ml-kem",
+    "encryption",
+    "browser"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  }
+}
